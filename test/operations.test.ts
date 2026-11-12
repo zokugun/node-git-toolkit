@@ -105,7 +105,7 @@ it('reports staged, unstaged, and untracked changes', async () => { // {{{
 
 it('detects when a local branch is behind its remote', async () => { // {{{
 	const clone = fse.join(directory, 'clone');
-	await git(directory, 'clone', remote, clone);
+	await git(directory, 'clone', '--branch', 'main', remote, clone);
 	await git(clone, 'config', 'user.name', 'Test User');
 	await git(clone, 'config', 'user.email', 'test@example.com');
 	await fse.writeFile(fse.join(clone, 'remote.txt'), 'remote change');
