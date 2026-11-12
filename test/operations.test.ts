@@ -9,7 +9,7 @@ let directory: string;
 let remote: string;
 let repository: string;
 
-beforeEach(async () => {
+beforeEach(async () => { // {{{
 	const tempDirectory = await fse.makeTempDir({ prefix: 'git-toolkit-' });
 
 	if(tempDirectory.fails) {
@@ -19,20 +19,20 @@ beforeEach(async () => {
 	directory = tempDirectory.value;
 
 	({ remote, repository } = await createRepository(directory));
-});
+}); // }}}
 
-afterEach(async () => {
+afterEach(async () => { // {{{
 	await fse.remove(directory);
-});
+}); // }}}
 
-it('checks out a new branch', async () => {
+it('checks out a new branch', async () => { // {{{
 	const result = await checkoutNewBranch('feature/test', false, repository);
 
 	expect(result.fails).toBe(false);
 	expect(await getHeadBranch(repository)).toMatchObject({ fails: false, value: 'feature/test' });
-});
+}); // }}}
 
-it('fetches a remote branch', async () => {
+it('fetches a remote branch', async () => { // {{{
 	await git(repository, 'checkout', '-b', 'feature/fetch');
 	await fse.writeFile(fse.join(repository, 'feature.txt'), 'feature');
 	await git(repository, 'add', '--all');
@@ -44,20 +44,20 @@ it('fetches a remote branch', async () => {
 
 	expect(result.fails).toBe(false);
 	expect(await git(repository, 'rev-parse', 'refs/remotes/origin/feature/fetch')).not.toBe('');
-});
+}); // }}}
 
-it('finds the repository Git directory from a nested path', async () => {
+it('finds the repository Git directory from a nested path', async () => { // {{{
 	const nested = fse.join(repository, 'nested', 'directory');
 	await fse.mkdir(nested, { recursive: true });
 
 	expect(await findDotGitDirectory(nested)).toMatchObject({ fails: false, value: fse.join(repository, '.git') });
-});
+}); // }}}
 
-it('gets the remote default branch', async () => {
+it('gets the remote default branch', async () => { // {{{
 	expect(await getDefaultBranch('origin', repository)).toMatchObject({ fails: false, value: 'main' });
-});
+}); // }}}
 
-it('parses a GitHub repository remote', async () => {
+it('parses a GitHub repository remote', async () => { // {{{
 	await git(repository, 'remote', 'set-url', 'origin', 'https://github.com/octocat/hello-world.git');
 	expect(await git(repository, 'remote', 'get-url', 'origin')).toBe('https://github.com/octocat/hello-world.git');
 
@@ -65,19 +65,19 @@ it('parses a GitHub repository remote', async () => {
 		fails: false,
 		value: { owner: 'octocat', repo: 'hello-world' },
 	});
-});
+}); // }}}
 
-it('gets the current branch', async () => {
+it('gets the current branch', async () => { // {{{
 	expect(await getHeadBranch(repository)).toMatchObject({ fails: false, value: 'main' });
-});
+}); // }}}
 
-it('gets the current commit hash', async () => {
+it('gets the current commit hash', async () => { // {{{
 	const expectedHash = await git(repository, 'rev-parse', 'HEAD');
 
 	expect(await getHeadCommitHash(repository)).toMatchObject({ fails: false, value: expectedHash });
-});
+}); // }}}
 
-it('reports staged, unstaged, and untracked changes', async () => {
+it('reports staged, unstaged, and untracked changes', async () => { // {{{
 	const packagePath = fse.join(repository, 'package.json');
 	const packageContents = await fse.readFile(packagePath, 'utf8');
 
@@ -101,9 +101,9 @@ it('reports staged, unstaged, and untracked changes', async () => {
 		fails: false,
 		value: { staged: true, unstaged: false, untracked: true },
 	});
-});
+}); // }}}
 
-it('detects when a local branch is behind its remote', async () => {
+it('detects when a local branch is behind its remote', async () => { // {{{
 	const clone = fse.join(directory, 'clone');
 	await git(directory, 'clone', remote, clone);
 	await git(clone, 'config', 'user.name', 'Test User');
@@ -112,29 +112,31 @@ it('detects when a local branch is behind its remote', async () => {
 	await git(clone, 'add', '--all');
 	await git(clone, 'commit', '--message', 'feat: remote change');
 	await git(clone, 'push', '--quiet', 'origin', 'main');
-	await fetchBranch('main', 'origin', repository);
+	const remoteHead = await git(clone, 'rev-parse', 'main');
+	await git(repository, 'fetch', '--quiet', 'origin', 'main:refs/remotes/origin/main');
+	expect(await git(repository, 'rev-parse', 'origin/main')).toBe(remoteHead);
 
 	expect(await isLocalBranchBehindRemote('main', 'origin', repository)).toBe(true);
-});
+}); // }}}
 
-it('checks whether a local branch exists', async () => {
+it('checks whether a local branch exists', async () => { // {{{
 	expect(await isLocalBranchExists('main', repository)).toBe(true);
 	expect(await isLocalBranchExists('missing', repository)).toBe(false);
-});
+}); // }}}
 
-it('checks whether a remote branch exists', async () => {
+it('checks whether a remote branch exists', async () => { // {{{
 	expect(await isRemoteBranchExists('main', 'origin', repository)).toBe(true);
 	expect(await isRemoteBranchExists('missing', 'origin', repository)).toBe(false);
-});
+}); // }}}
 
-it('checks whether the working directory is clean', async () => {
+it('checks whether the working directory is clean', async () => { // {{{
 	expect(await isWorkingDirectoryClean(repository)).toBe(true);
 
 	await fse.writeFile(fse.join(repository, 'untracked.txt'), 'new file');
 	expect(await isWorkingDirectoryClean(repository)).toBe(false);
-});
+}); // }}}
 
-it('lists stashes', async () => {
+it('lists stashes', async () => { // {{{
 	const packagePath = fse.join(repository, 'package.json');
 	const packageContents = await fse.readFile(packagePath, 'utf8');
 
@@ -158,8 +160,8 @@ it('lists stashes', async () => {
 	expect(result.value).toHaveLength(1);
 	expect(result.value[0]).toMatchObject({ name: 'saved work', selector: 'stash@{0}' });
 	expect(result.value[0].hash).toMatch(/^[a-f0-9]{40}$/);
-});
+}); // }}}
 
-it('lists tags', async () => {
+it('lists tags', async () => { // {{{
 	expect(await listTags(repository)).toMatchObject({ fails: false, value: ['1.0.0'] });
-});
+}); // }}}
