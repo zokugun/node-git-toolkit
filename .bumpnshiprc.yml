@@ -1,0 +1,6 @@
+publish:
+  commit:
+    header: v{version}
+  tag:
+    name: v{version}
+    message: Release version {version}

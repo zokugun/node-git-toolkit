@@ -1,0 +1,109 @@
+{
+	"name": "@zokugun/git-toolkit",
+	"description": "A toolkit for performing Git operations and transactions.",
+	"version": "0.0.0",
+	"author": {
+		"name": "Baptiste Augrain",
+		"email": "daiyam@zokugun.org"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/zokugun/node-git-toolkit",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/zokugun/node-git-toolkit.git"
+	},
+	"bugs": {
+		"url": "https://github.com/zokugun/node-git-toolkit/discussions/categories/issue-triage"
+	},
+	"type": "module",
+	"main": "lib/cjs/index.cjs",
+	"module": "lib/esm/index.mjs",
+	"scripts": {
+		"audit:fix": "npm audit fix --min-release-age=0",
+		"build": "npm run clean && npm run build:out",
+		"build:out": "tsc-leda generate",
+		"build:package": "tsc-leda update-package && npm run lint:package",
+		"ci:lint": "zizmor .",
+		"ci:lint:fix": "zizmor . --fix=all",
+		"clean": "rimraf .src; rimraf lib; rimraf .test",
+		"compile:src": "tsc -p src",
+		"compile:test": "tsc -p test",
+		"lint": "eslint",
+		"lint:all": "npm run lint:package && npm audit && npm run ci:lint",
+		"lint:fix": "eslint --fix",
+		"lint:package": "fixpack || true",
+		"prepack": "npm run build",
+		"prepare": "husky; npm run lint:package",
+		"test": "vitest run --reporter tree",
+		"test:coverage": "vitest run --reporter tree --coverage --coverage.reporter text",
+		"test:ui": "vitest --ui --coverage",
+		"test:watch": "vitest",
+		"update:artifacts": "artifact update",
+		"update:ci": "pinact run -min-age 7 -update",
+		"update:deps": "taze --all",
+		"watch:build": "tsc-watch -p src --onSuccess 'npm run build'",
+		"watch:src": "tsc-watch -p src",
+		"watch:test": "tsc-watch -p test"
+	},
+	"dependencies": {
+		"@zokugun/exec-lite": "0.2.0",
+		"@zokugun/fs-extra-plus": "0.7.0",
+		"@zokugun/is-it-type": "0.8.1",
+		"@zokugun/namegen-lite": "0.1.0",
+		"@zokugun/xtry": "0.12.2"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "20.5.3",
+		"@commitlint/config-conventional": "20.5.3",
+		"@types/node": "20.19.43",
+		"@vitest/coverage-v8": "4.1.12",
+		"@vitest/ui": "4.1.12",
+		"@zokugun/eslint-config": "0.2.1",
+		"@zokugun/eslint-config-data": "0.2.1",
+		"@zokugun/eslint-config-glossary": "0.2.0",
+		"@zokugun/eslint-config-js": "0.2.1",
+		"@zokugun/eslint-config-md": "0.4.1",
+		"@zokugun/eslint-config-nodejs": "0.2.0",
+		"@zokugun/eslint-config-style": "0.3.1",
+		"@zokugun/eslint-config-test": "0.2.0",
+		"@zokugun/eslint-config-ts": "0.3.2",
+		"@zokugun/tsc-leda": "0.9.5",
+		"eslint": "10.13.0",
+		"fixpack": "4.0.0",
+		"husky": "9.1.7",
+		"lint-staged": "16.4.0",
+		"rimraf": "6.1.4",
+		"taze": "19.17.2",
+		"tsc-watch": "7.2.1",
+		"typescript": "5.9.3",
+		"vitest": "4.1.12",
+		"yaml": "2.9.1"
+	},
+	"overrides": {
+		"@eslint/config-array": {
+			"minimatch": "11.0.1"
+		},
+		"@typescript-eslint/typescript-estree": {
+			"minimatch": "11.0.1"
+		},
+		"eslint": {
+			"minimatch": "11.0.1"
+		},
+		"eslint-plugin-import-x": {
+			"minimatch": "11.0.1"
+		},
+		"micromark-extension-math": {
+			"katex": "0.18.2"
+		}
+	},
+	"allowScripts": {
+		"fsevents": true
+	},
+	"keywords": [
+		"git",
+		"repository",
+		"rollback",
+		"toolkit",
+		"transaction"
+	]
+}
