@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog], and this project adheres to [Semantic Versioning][semver].
 
+[unreleased]
+------------
+
+### Added
+
+- add `loadGitTokens` function
+
 [v0.1.0] | 2026-11-12
 ---------------------
 

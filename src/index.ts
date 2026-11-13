@@ -12,5 +12,5 @@ export { isRemoteBranchExists } from './operations/is-remote-branch-exists.js'
 export { isWorkingDirectoryClean } from './operations/is-working-directory-clean.js'
 export { listStashes } from './operations/list-stashes.js'
 export { listTags } from './operations/list-tags.js'
+export { loadGitTokens } from './tokens/load-git-tokens.js'
 export { withGitTransaction } from './transaction/with-git-transaction.js'
-

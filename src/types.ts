@@ -11,6 +11,12 @@ export type GithubRepo = {
   repo: string
 }
 
+export type GitTokens = {
+	branch: string;
+	commitId: string;
+	distance: string;
+}
+
 export type Stash = {
 	hash: string;
 	name: string;
