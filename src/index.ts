@@ -1,3 +1,12 @@
+export type {
+	ChangeStatus,
+	GitTokens,
+	GithubRepo,
+	Stash,
+	TxAction,
+	TxOptions,
+} from './types.js'
+
 export { checkoutNewBranch } from './operations/checkout-new-branch.js'
 export { fetchBranch } from './operations/fetch-branch.js'
 export { findDotGitDirectory } from './operations/find-dotgit-directory.js'
