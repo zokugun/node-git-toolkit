@@ -47,7 +47,7 @@
 		"watch:test": "tsc-watch -p test"
 	},
 	"dependencies": {
-		"@zokugun/exec-lite": "0.2.0",
+		"@zokugun/exec-lite": "0.3.0",
 		"@zokugun/fs-extra-plus": "0.7.0",
 		"@zokugun/is-it-type": "0.8.1",
 		"@zokugun/namegen-lite": "0.1.0",
