@@ -13,7 +13,7 @@ export async function getDefaultBranch(remote: string, cwd: string): AsyncDResul
 			return err(stringifyError(getResult.error));
 		}
 
-		const setResult = await exec('git', ['remote', 'set-head', remote, ' --auto'], { cwd });
+		const setResult = await exec('git', ['remote', 'set-head', remote, '--auto'], { cwd });
 
 		if(setResult.fails) {
 			return err(stringifyError(setResult.error));

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog], and this project adheres to [Semantic Versioning][semver].
 
+[Unreleased]
+------------
+
+### Fixed
+
+- remove space from command's argument string
+
+
 [v0.2.3] | 2026-11-16
 ---------------------
 
